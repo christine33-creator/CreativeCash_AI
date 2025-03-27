@@ -27,7 +27,26 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "webpack"
+      "bundler": "webpack",
+      "name": "CreativeCash AI",
+      "shortName": "CreativeCash",
+      "description": "Financial management for freelancers",
+      "lang": "en",
+      "scope": "/",
+      "themeColor": "#5C6BC0",
+      "backgroundColor": "#FFFFFF",
+      "startUrl": "/",
+      "display": "standalone",
+      "icons": [
+        {
+          "src": "path/to/icon-192.png",
+          "sizes": "192x192"
+        },
+        {
+          "src": "path/to/icon-512.png",
+          "sizes": "512x512"
+        }
+      ]
     },
     "extra": {
       "eas": {
