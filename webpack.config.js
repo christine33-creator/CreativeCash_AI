@@ -1,15 +1,18 @@
 const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 
 module.exports = async function(env, argv) {
+  // Make sure env has the correct structure
+  const envWithDefaults = {
+    ...env,
+    mode: env.mode || 'development'
+  };
+  
   const config = await createExpoWebpackConfigAsync(
-    {
-      ...env,
-      // Customize your webpack configuration here
-    },
+    envWithDefaults,
     argv
   );
   
-  // Maybe you want to add some custom plugins or rules
+  // Add any custom configurations here
   
   return config;
 }; 

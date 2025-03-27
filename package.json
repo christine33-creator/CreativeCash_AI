@@ -7,11 +7,12 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:web": "node ./scripts/build-web.js",
+    "build:web": "./build-web.sh",
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
-    "deploy": "vercel web-build"
+    "deploy": "npx vercel web-build --prod",
+    "build:web-direct": "webpack --config webpack.config.js --mode=production"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.24.0",
@@ -38,7 +39,8 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^4.2.4",
+    "expo-constants": "~14.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -46,7 +48,9 @@
     "@types/react": "~18.0.14",
     "@types/react-dom": "~18.0.10",
     "@types/react-native": "~0.70.6",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "webpack-cli": "^6.0.1"
   },
-  "private": true
+  "private": true,
+  "homepage": "."
 }

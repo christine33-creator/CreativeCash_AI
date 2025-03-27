@@ -1,4 +1,8 @@
 import { supabase } from './supabase';
+import { getFirestore, collection, addDoc, query, where, orderBy, getDocs } from 'firebase/firestore';
+import { app } from './firebase';
+
+const db = getFirestore(app);
 
 // Deepseek API integration
 const DEEPSEEK_API_KEY = 'sk-dc0ba353385349728e6745d67f5ff51b';
@@ -152,4 +156,105 @@ export const getAISuggestions = () => {
     "How much should I set aside for taxes?",
     "What insurance do I need as a freelancer?"
   ];
+};
+
+// Get financial insights based on user data
+export const getFinancialInsights = async (userId, incomeData) => {
+  try {
+    // This would typically call an AI model API
+    // For now, we'll return some static insights
+    const insights = [
+      {
+        type: 'income_trend',
+        title: 'Income Trend',
+        description: 'Your income has increased by 15% compared to last month.',
+        recommendation: 'Consider setting aside the additional income for savings or investments.'
+      },
+      {
+        type: 'tax_optimization',
+        title: 'Tax Optimization',
+        description: 'You have a high percentage of income in the "Freelance" category.',
+        recommendation: 'Make sure you\'re tracking all business expenses to maximize deductions.'
+      },
+      {
+        type: 'diversification',
+        title: 'Income Diversification',
+        description: 'Most of your income comes from a single source.',
+        recommendation: 'Consider diversifying your income streams to reduce financial risk.'
+      }
+    ];
+    
+    return { insights };
+  } catch (error) {
+    return { error };
+  }
+};
+
+// Save a chat message
+export const saveChatMessage = async (userId, message, isUser = true) => {
+  try {
+    const docRef = await addDoc(collection(db, 'chat_messages'), {
+      userId,
+      content: message,
+      isUser,
+      timestamp: new Date()
+    });
+    
+    return { id: docRef.id };
+  } catch (error) {
+    return { error };
+  }
+};
+
+// Get chat history
+export const getChatHistory = async (userId) => {
+  try {
+    const q = query(
+      collection(db, 'chat_messages'),
+      where('userId', '==', userId),
+      orderBy('timestamp', 'asc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const messages = [];
+    
+    querySnapshot.forEach((doc) => {
+      messages.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    return { messages };
+  } catch (error) {
+    return { error };
+  }
+};
+
+// Get AI response to a user message
+export const getAIResponse = async (userId, message) => {
+  try {
+    // In a real app, this would call an AI API like OpenAI
+    // For now, we'll return some static responses
+    
+    const lowerMessage = message.toLowerCase();
+    let response = '';
+    
+    if (lowerMessage.includes('tax') || lowerMessage.includes('taxes')) {
+      response = "Based on your income data, I recommend setting aside about 30% of your freelance income for taxes. Remember to track all your business expenses for potential deductions.";
+    } else if (lowerMessage.includes('save') || lowerMessage.includes('saving')) {
+      response = "Looking at your income patterns, you could comfortably save about 20% of your monthly income. Consider automating transfers to a high-yield savings account.";
+    } else if (lowerMessage.includes('invest') || lowerMessage.includes('investment')) {
+      response = "With your current financial situation, you might consider starting with index funds or ETFs. They offer diversification with relatively lower risk for beginning investors.";
+    } else {
+      response = "I'm your financial assistant. I can help with questions about your income, taxes, savings, and investments. What would you like to know?";
+    }
+    
+    // Save the AI response to the chat history
+    await saveChatMessage(userId, response, false);
+    
+    return { response };
+  } catch (error) {
+    return { error };
+  }
 }; 

@@ -2,9 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 
-// Replace with your Supabase URL and anon key
-const supabaseUrl = 'https://mzjtokatolreshwfwgnh.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16anRva2F0b2xyZXNod2Z3Z25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NzU0NzMsImV4cCI6MjA1ODI1MTQ3M30.OmPONDxVzqdmkMHuv_1wsCdocCwEyLBFENMKwOisyVY';
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase credentials. Please check your environment variables.');
+}
 
 // Initialize the Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -17,49 +20,40 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 // Authentication functions
-export const signUp = async (email, password, displayName) => {
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          display_name: displayName,
-        },
-      },
-    });
-
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('Error signing up:', error.message);
-    throw error;
-  }
+export const signUp = async (email, password, metadata = {}) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: metadata
+    }
+  });
+  
+  return { data, error };
 };
 
 export const signIn = async (email, password) => {
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('Error signing in:', error.message);
-    throw error;
-  }
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+  
+  return { data, error };
 };
 
 export const signOut = async () => {
-  try {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
-  } catch (error) {
-    console.error('Error signing out:', error.message);
-    throw error;
-  }
+  const { error } = await supabase.auth.signOut();
+  return { error };
+};
+
+export const getCurrentUser = async () => {
+  const { data, error } = await supabase.auth.getUser();
+  return { user: data?.user || null, error };
+};
+
+export const getSession = async () => {
+  const { data, error } = await supabase.auth.getSession();
+  return { session: data?.session || null, error };
 };
 
 export const resetPassword = async (email) => {
