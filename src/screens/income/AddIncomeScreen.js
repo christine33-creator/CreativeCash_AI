@@ -28,32 +28,38 @@ export default function AddIncomeScreen({ navigation }) {
   
   const categories = [
     'Freelance', 
+    'Contract', 
     'Consulting', 
     'Design', 
     'Development', 
     'Writing', 
     'Speaking', 
-    'Coaching', 
+    'Teaching', 
     'Other'
   ];
   
-  const handleDateChange = (event, selectedDate) => {
+  const onDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDatePicker(false);
+    setShowDatePicker(Platform.OS === 'ios');
     setDate(currentDate);
   };
   
-  const handleSave = async () => {
-    // Validate inputs
+  const validateForm = () => {
     if (!title.trim()) {
       Alert.alert('Error', 'Please enter a title for this income');
-      return;
+      return false;
     }
     
     if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
       Alert.alert('Error', 'Please enter a valid amount');
-      return;
+      return false;
     }
+    
+    return true;
+  };
+  
+  const handleSave = async () => {
+    if (!validateForm()) return;
     
     setIsLoading(true);
     
@@ -72,15 +78,15 @@ export default function AddIncomeScreen({ navigation }) {
       await addIncome(incomeData);
       
       // Navigate back to the income list with a success message
-      Alert.alert(
-        'Success',
-        'Income entry added successfully',
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
-      );
+      Alert.alert('Success', 'Income added successfully', [
+        { 
+          text: 'OK', 
+          onPress: () => navigation.goBack() 
+        }
+      ]);
     } catch (error) {
-      console.error('Error saving income:', error);
-      Alert.alert('Error', 'Failed to save income entry. Please try again.');
-    } finally {
+      console.error('Error adding income:', error);
+      Alert.alert('Error', 'Failed to add income. Please try again.');
       setIsLoading(false);
     }
   };
@@ -88,100 +94,85 @@ export default function AddIncomeScreen({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.formContainer}>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Title</Text>
+        <Text style={styles.label}>Title</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="e.g., Website Design Project"
+          value={title}
+          onChangeText={setTitle}
+        />
+        
+        <Text style={styles.label}>Amount</Text>
+        <View style={styles.amountInputContainer}>
+          <Text style={styles.currencySymbol}>$</Text>
           <TextInput
-            style={styles.input}
-            value={title}
-            onChangeText={setTitle}
-            placeholder="e.g., Website Design Project"
-            placeholderTextColor={colors.textLight}
+            style={styles.amountInput}
+            placeholder="0.00"
+            keyboardType="decimal-pad"
+            value={amount}
+            onChangeText={setAmount}
           />
         </View>
         
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Amount</Text>
-          <View style={styles.amountInputContainer}>
-            <Text style={styles.currencySymbol}>$</Text>
-            <TextInput
-              style={styles.amountInput}
-              value={amount}
-              onChangeText={setAmount}
-              placeholder="0.00"
-              placeholderTextColor={colors.textLight}
-              keyboardType="decimal-pad"
-            />
-          </View>
-        </View>
+        <Text style={styles.label}>Date</Text>
+        <TouchableOpacity 
+          style={styles.datePickerButton}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text style={styles.dateText}>
+            {date.toLocaleDateString()}
+          </Text>
+          <Ionicons name="calendar-outline" size={24} color={colors.primary} />
+        </TouchableOpacity>
         
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Date</Text>
-          <TouchableOpacity 
-            style={styles.datePickerButton}
-            onPress={() => setShowDatePicker(true)}
-          >
-            <Text style={styles.dateText}>
-              {date.toLocaleDateString()}
-            </Text>
-            <Ionicons name="calendar-outline" size={20} color={colors.primary} />
-          </TouchableOpacity>
-          {showDatePicker && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="default"
-              onChange={handleDateChange}
-            />
-          )}
-        </View>
-        
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Client</Text>
-          <TextInput
-            style={styles.input}
-            value={client}
-            onChangeText={setClient}
-            placeholder="e.g., ABC Company"
-            placeholderTextColor={colors.textLight}
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
           />
-        </View>
+        )}
         
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Category</Text>
-          <View style={styles.categoryContainer}>
-            {categories.map((cat) => (
-              <TouchableOpacity
-                key={cat}
+        <Text style={styles.label}>Client</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="e.g., ABC Company"
+          value={client}
+          onChangeText={setClient}
+        />
+        
+        <Text style={styles.label}>Category</Text>
+        <View style={styles.categoryContainer}>
+          {categories.map((cat) => (
+            <TouchableOpacity
+              key={cat}
+              style={[
+                styles.categoryButton,
+                category === cat && styles.selectedCategoryButton
+              ]}
+              onPress={() => setCategory(cat)}
+            >
+              <Text 
                 style={[
-                  styles.categoryButton,
-                  category === cat && styles.selectedCategoryButton
-                ]}
-                onPress={() => setCategory(cat)}
-              >
-                <Text style={[
                   styles.categoryButtonText,
                   category === cat && styles.selectedCategoryButtonText
-                ]}>
-                  {cat}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+                ]}
+              >
+                {cat}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
         
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Notes</Text>
-          <TextInput
-            style={[styles.input, styles.notesInput]}
-            value={notes}
-            onChangeText={setNotes}
-            placeholder="Add any additional details here..."
-            placeholderTextColor={colors.textLight}
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-          />
-        </View>
+        <Text style={styles.label}>Notes</Text>
+        <TextInput
+          style={[styles.input, styles.notesInput]}
+          placeholder="Add any additional details here..."
+          value={notes}
+          onChangeText={setNotes}
+          multiline
+        />
         
         <TouchableOpacity 
           style={styles.saveButton}
@@ -189,7 +180,7 @@ export default function AddIncomeScreen({ navigation }) {
           disabled={isLoading}
         >
           {isLoading ? (
-            <ActivityIndicator size="small" color={colors.white} />
+            <ActivityIndicator color={colors.white} />
           ) : (
             <Text style={styles.saveButtonText}>Save Income</Text>
           )}
@@ -207,52 +198,48 @@ const styles = StyleSheet.create({
   formContainer: {
     padding: 20,
   },
-  formGroup: {
-    marginBottom: 20,
-  },
   label: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'bold',
     color: colors.text,
     marginBottom: 8,
+    marginTop: 16,
   },
   input: {
     backgroundColor: colors.white,
-    borderRadius: 10,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
     borderWidth: 1,
     borderColor: colors.border,
-    padding: 15,
-    fontSize: 16,
-    color: colors.text,
   },
   amountInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white,
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: colors.border,
   },
   currencySymbol: {
-    fontSize: 16,
+    fontSize: 18,
     color: colors.text,
-    paddingLeft: 15,
+    paddingHorizontal: 12,
   },
   amountInput: {
     flex: 1,
-    padding: 15,
+    padding: 12,
     fontSize: 16,
-    color: colors.text,
   },
   datePickerButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: colors.white,
-    borderRadius: 10,
+    borderRadius: 8,
+    padding: 12,
     borderWidth: 1,
     borderColor: colors.border,
-    padding: 15,
   },
   dateText: {
     fontSize: 16,
@@ -261,13 +248,12 @@ const styles = StyleSheet.create({
   categoryContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 5,
+    marginTop: 8,
   },
   categoryButton: {
-    backgroundColor: colors.background,
-    borderRadius: 20,
     borderWidth: 1,
     borderColor: colors.border,
+    borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 15,
     marginRight: 10,
@@ -293,7 +279,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 30,
+    marginBottom: 20,
   },
   saveButtonText: {
     color: colors.white,

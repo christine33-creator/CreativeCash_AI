@@ -125,6 +125,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Add web-specific authentication handling
+  const handleWebAuth = async (email, password, isSignUp = false) => {
+    try {
+      if (isSignUp) {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        if (error) throw error;
+        return data;
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+        return data;
+      }
+    } catch (error) {
+      console.error('Web auth error:', error);
+      throw error;
+    }
+  };
+
   const value = {
     user,
     session,

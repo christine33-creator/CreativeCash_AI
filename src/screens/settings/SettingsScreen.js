@@ -11,11 +11,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../styles/colors';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function SettingsScreen({ navigation }) {
   const { logout, user } = useAuth();
+  const { colors, isDarkMode, toggleTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   
   const handleLogout = async () => {
@@ -55,90 +56,201 @@ export default function SettingsScreen({ navigation }) {
     <Text style={styles.sectionHeader}>{title}</Text>
   );
 
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Settings</Text>
-      </View>
+  // Dynamic styles based on theme
+  const dynamicStyles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.primary,
+      padding: 20,
+      alignItems: 'center',
+    },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: colors.white,
+      marginBottom: 5,
+    },
+    headerSubtitle: {
+      fontSize: 16,
+      color: colors.white,
+      opacity: 0.8,
+    },
+    section: {
+      marginTop: 20,
+      backgroundColor: colors.card,
+      borderRadius: 10,
+      marginHorizontal: 15,
+      overflow: 'hidden',
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.textLight,
+      marginHorizontal: 15,
+      marginTop: 20,
+      marginBottom: 10,
+    },
+    menuItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 15,
+      paddingHorizontal: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    lastMenuItem: {
+      borderBottomWidth: 0,
+    },
+    menuIcon: {
+      width: 30,
+      alignItems: 'center',
+      marginRight: 10,
+    },
+    menuText: {
+      flex: 1,
+      fontSize: 16,
+      color: colors.text,
+    },
+    menuRight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    menuValue: {
+      fontSize: 16,
+      color: colors.textLight,
+      marginRight: 5,
+    },
+    logoutButton: {
+      backgroundColor: colors.error,
+      borderRadius: 10,
+      padding: 15,
+      alignItems: 'center',
+      marginHorizontal: 15,
+      marginTop: 30,
+      marginBottom: 30,
+    },
+    logoutButtonText: {
+      color: colors.white,
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+  });
 
-      <View style={styles.profileSection}>
+  return (
+    <ScrollView style={dynamicStyles.container}>
+      <View style={dynamicStyles.header}>
+        <Text style={dynamicStyles.headerTitle}>Settings</Text>
+        <Text style={dynamicStyles.headerSubtitle}>
+          {user?.email || 'User'}
+        </Text>
+      </View>
+      
+      <Text style={dynamicStyles.sectionTitle}>Account</Text>
+      <View style={dynamicStyles.section}>
         <TouchableOpacity 
-          style={styles.profileButton}
+          style={dynamicStyles.menuItem}
           onPress={() => navigation.navigate('Profile')}
         >
-          <View style={styles.profileAvatar}>
-            <Text style={styles.profileInitial}>
-              {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
-            </Text>
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons name="person-outline" size={24} color={colors.primary} />
           </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>{user?.displayName || 'User'}</Text>
-            <Text style={styles.profileEmail}>{user?.email || 'user@example.com'}</Text>
+          <Text style={dynamicStyles.menuText}>Profile</Text>
+          <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={dynamicStyles.menuItem}
+          onPress={() => navigation.navigate('TaxSettings')}
+        >
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons name="calculator-outline" size={24} color={colors.primary} />
           </View>
+          <Text style={dynamicStyles.menuText}>Tax Settings</Text>
+          <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={dynamicStyles.menuItem}
+          onPress={() => navigation.navigate('NotificationSettings')}
+        >
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons name="notifications-outline" size={24} color={colors.primary} />
+          </View>
+          <Text style={dynamicStyles.menuText}>Notifications</Text>
           <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
         </TouchableOpacity>
       </View>
-
-      {renderSectionHeader('Account')}
-      <View style={styles.settingsGroup}>
-        {renderSettingItem('person-outline', 'Profile', () => navigation.navigate('Profile'))}
-        {renderSettingItem('card-outline', 'Payment Methods', () => Alert.alert('Coming Soon', 'This feature is coming soon!'))}
-        {renderSettingItem('receipt-outline', 'Tax Information', () => navigation.navigate('TaxSettings'))}
-        {renderSettingItem('calculator-outline', 'Tax Calculator', () => navigation.navigate('TaxCalculator'))}
-        {renderSettingItem('search-outline', 'Deduction Finder', () => navigation.navigate('DeductionFinder'))}
-        {renderSettingItem('analytics-outline', 'AI Financial Insights', () => navigation.navigate('AIInsights'))}
-        {renderSettingItem('people-outline', 'Client Management', () => navigation.navigate('ClientManagement'))}
-      </View>
-
-      {renderSectionHeader('Preferences')}
-      <View style={styles.settingsGroup}>
-        {renderSettingItem('notifications-outline', 'Notifications', null, (
+      
+      <Text style={dynamicStyles.sectionTitle}>Appearance</Text>
+      <View style={dynamicStyles.section}>
+        <View style={dynamicStyles.menuItem}>
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons 
+              name={isDarkMode ? "moon" : "sunny-outline"} 
+              size={24} 
+              color={colors.primary} 
+            />
+          </View>
+          <Text style={dynamicStyles.menuText}>Dark Mode</Text>
           <Switch
-            value={notificationsEnabled}
-            onValueChange={setNotificationsEnabled}
+            value={isDarkMode}
+            onValueChange={toggleTheme}
             trackColor={{ false: colors.border, true: colors.primary }}
             thumbColor={colors.white}
           />
-        ))}
-        {renderSettingItem('moon-outline', 'Dark Mode', null, (
-          <Switch
-            value={darkModeEnabled}
-            onValueChange={setDarkModeEnabled}
-            trackColor={{ false: colors.border, true: colors.primary }}
-            thumbColor={colors.white}
-          />
-        ))}
-        {renderSettingItem('finger-print-outline', 'Biometric Login', null, (
-          <Switch
-            value={biometricEnabled}
-            onValueChange={setBiometricEnabled}
-            trackColor={{ false: colors.border, true: colors.primary }}
-            thumbColor={colors.white}
-          />
-        ))}
-        {renderSettingItem('globe-outline', 'Currency', () => Alert.alert('Coming Soon', 'This feature is coming soon!'))}
-        {renderSettingItem('notifications-outline', 'Notification Settings', () => navigation.navigate('NotificationSettings'))}
+        </View>
       </View>
-
-      {renderSectionHeader('Support')}
-      <View style={styles.settingsGroup}>
-        {renderSettingItem('help-circle-outline', 'Help Center', () => Alert.alert('Coming Soon', 'This feature is coming soon!'))}
-        {renderSettingItem('document-text-outline', 'Terms of Service', () => Alert.alert('Coming Soon', 'This feature is coming soon!'))}
-        {renderSettingItem('shield-outline', 'Privacy Policy', () => Alert.alert('Coming Soon', 'This feature is coming soon!'))}
-        {renderSettingItem('mail-outline', 'Contact Us', () => Alert.alert('Coming Soon', 'This feature is coming soon!'))}
+      
+      <Text style={dynamicStyles.sectionTitle}>Tools</Text>
+      <View style={dynamicStyles.section}>
+        <TouchableOpacity 
+          style={dynamicStyles.menuItem}
+          onPress={() => navigation.navigate('TaxCalculator')}
+        >
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons name="calculator-outline" size={24} color={colors.primary} />
+          </View>
+          <Text style={dynamicStyles.menuText}>Tax Calculator</Text>
+          <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={dynamicStyles.menuItem}
+          onPress={() => navigation.navigate('DeductionFinder')}
+        >
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons name="search-outline" size={24} color={colors.primary} />
+          </View>
+          <Text style={dynamicStyles.menuText}>Deduction Finder</Text>
+          <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={dynamicStyles.menuItem}
+          onPress={() => navigation.navigate('AIChat')}
+        >
+          <View style={dynamicStyles.menuIcon}>
+            <Ionicons name="chatbubble-ellipses-outline" size={24} color={colors.primary} />
+          </View>
+          <Text style={dynamicStyles.menuText}>AI Assistant</Text>
+          <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+        </TouchableOpacity>
       </View>
-
-      {renderSectionHeader('App')}
-      <View style={styles.settingsGroup}>
-        {renderSettingItem('information-circle-outline', 'About', () => Alert.alert('About', 'CreativeCash AI\nVersion 1.0.0'))}
-        {renderSettingItem('log-out-outline', 'Logout', handleLogout)}
-        {renderSettingItem('calendar-outline', 'Financial Calendar', () => navigation.navigate('FinancialCalendar'))}
-        {renderSettingItem('flag-outline', 'Financial Goals', () => navigation.navigate('GoalSetting'))}
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>CreativeCash AI v1.0.0</Text>
-      </View>
+      
+      <TouchableOpacity 
+        style={dynamicStyles.logoutButton}
+        onPress={handleLogout}
+      >
+        <Text style={dynamicStyles.logoutButtonText}>Log Out</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }

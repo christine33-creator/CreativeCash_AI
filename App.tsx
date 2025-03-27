@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import { View, Text, ActivityIndicator } from 'react-native';
+import { ThemeProvider } from './src/contexts/ThemeContext';
 
 // Auth Screens
 import LoginScreen from './src/screens/auth/LoginScreen';
@@ -351,8 +352,10 @@ function AppNavigator() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppNavigator />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppNavigator />
+      </AuthProvider>
+    </ThemeProvider>
   );
 } 

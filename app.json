@@ -26,7 +26,8 @@
       "package": "com.kristin11.creativecashtracker"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "webpack"
     },
     "extra": {
       "eas": {

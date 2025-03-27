@@ -29,7 +29,17 @@ export default {
   },
   web: {
     bundler: 'metro',
-    favicon: './assets/favicon.png'
+    favicon: './assets/favicon.png',
+    name: 'CreativeCash AI',
+    shortName: 'CreativeCash',
+    description: 'Financial management for freelancers and creative professionals',
+    backgroundColor: '#F5F7FA',
+    themeColor: '#5C6BC0',
+    orientation: 'portrait',
+    lang: 'en',
+    scope: '/',
+    startUrl: '/',
+    display: 'standalone',
   },
   extra: {
     eas: {

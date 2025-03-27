@@ -32,11 +32,11 @@ export const IncomeStats = ({ totalIncome, bySource, byTaxCategory, periodLabel 
 
   return (
     <ScrollView style={styles.container}>
-      <Card>
+      <Card containerStyle={styles.cardContainer}>
         <Card.Title>{periodLabel} Summary</Card.Title>
         <View style={styles.totalContainer}>
           <Text style={styles.totalLabel}>Total Income</Text>
-          <Text style={styles.totalAmount}>{formatCurrency(totalIncome)}</Text>
+          <Text style={styles.totalValue}>{formatCurrency(totalIncome)}</Text>
         </View>
       </Card>
 
@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  cardContainer: {
+    // Add appropriate styles for the card container
+  },
   totalContainer: {
     alignItems: 'center',
     marginVertical: 10,
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
-  totalAmount: {
+  totalValue: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#2ecc71',
