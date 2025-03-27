@@ -7,9 +7,9 @@ cd "$(dirname "$0")"
 echo "Removing existing web-build directory..."
 rm -rf web-build
 
-# Build the web version
-echo "Building web version..."
-npx expo export --platform web
+# Build the web version using webpack
+echo "Building web version with webpack..."
+npx webpack --config node_modules/@expo/webpack-config/webpack.config.js --mode production
 
 # Check if the build was successful
 if [ $? -eq 0 ]; then
@@ -18,13 +18,8 @@ if [ $? -eq 0 ]; then
   # Create the web-build directory if it doesn't exist
   mkdir -p web-build
   
-  # Copy files from dist to web-build
-  echo "Copying files from dist to web-build..."
-  cp -r dist/* web-build/
-  
-  # List files in web-build directory
-  echo "Files in web-build directory:"
-  ls -la web-build
+  # Copy files from web-build (webpack output) to web-build
+  echo "Copying files to web-build..."
   
   # Create a .env file in the web-build directory
   echo "Creating .env file in web-build..."
@@ -37,6 +32,35 @@ EXPO_PUBLIC_FIREBASE_PROJECT_ID=creativecashai
 EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=creativecashai.firebasestorage.app
 EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=882067255972
 EXPO_PUBLIC_FIREBASE_APP_ID=1:882067255972:web:7e8d782205375b97dbac31
+EOL
+  
+  # Create vercel.json in web-build
+  echo "Creating vercel.json in web-build..."
+  cat > web-build/vercel.json << 'EOL'
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "src": "/bundles/(.*)",
+      "dest": "/bundles/$1",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
 EOL
   
   echo "Build successful!"

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Profile Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+    .user-menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      width: 200px;
+      z-index: 10;
+    }
+    .user-menu-content a {
+      display: block;
+      color: #333;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .user-menu-content a:hover {
+      background-color: #f5f7fa;
+    }
+    .user-menu:hover .user-menu-content {
+      display: block;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2rem;
+      margin: 0 0 0.5rem 0;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+    .profile-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .profile-header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+    }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      margin-right: 1.5rem;
+      color: #3f51b5;
+    }
+    .profile-info h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+    }
+    .profile-info p {
+      margin: 0;
+      opacity: 0.9;
+    }
+    .profile-content {
+      padding: 2rem;
+    }
+    .form-section {
+      margin-bottom: 2rem;
+    }
+    .form-section:last-child {
+      margin-bottom: 0;
+    }
+    .form-section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #3f51b5;
+      display: flex;
+      align-items: center;
+    }
+    .form-section-title .icon {
+      margin-right: 0.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: 500;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #3f51b5;
+      box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+    }
+    .form-row {
+      display: flex;
+      gap: 1rem;
+    }
+    .form-row .form-group {
+      flex: 1;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .button-outline {
+      background-color: transparent;
+      color: #5c6bc0;
+      border: 1px solid #5c6bc0;
+    }
+    .button-outline:hover {
+      background-color: #f0f2ff;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .toggle-slider {
+      background-color: #5c6bc0;
+    }
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    .toggle-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .toggle-label {
+      font-weight: 500;
+    }
+    .toggle-description {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.2rem;
+    }
+    .alert {
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .alert-success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+    .alert-danger {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/transactions.html">Transactions</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/features.html">Features</a>
+    </nav>
+    <div class="user-menu">
+      <span id="userDisplayName">User</span>
+      <div class="user-menu-content">
+        <a href="/profile.html">Profile</a>
+        <a href="#" id="logoutButton">Logout</a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="page-header">
+      <h1>Profile Settings</h1>
+      <p class="subtitle">Manage your account settings and preferences</p>
+    </div>
+    
+    <div id="successAlert" class="alert alert-success" style="display: none;">
+      Your profile has been updated successfully.
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" id="avatarInitial">U</div>
+        <div class="profile-info">
+          <h2 id="profileName">User Name</h2>
+          <p id="profileEmail">user@example.com</p>
+        </div>
+      </div>
+      
+      <div class="profile-content">
+        <form id="profileForm">
+          <div class="form-section">
+            <div class="form-section-title">
+              <span class="icon">👤</span> Personal Information
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="profession">Profession</label>
+              <select id="profession" name="profession">
+                <option value="freelance-writer">Freelance Writer</option>
+                <option value="graphic-designer">Graphic Designer</option>
+                <option value="web-developer">Web Developer</option>
+                <option value="photographer">Photographer</option>
+                <option value="video-editor">Video Editor</option>
+                <option value="marketing-consultant">Marketing Consultant</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="bio">Bio</label>
+              <textarea id="bio" name="bio" rows="3" placeholder="Tell us a bit about yourself and your creative work"></textarea>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <div class="form-section-title">
+              <span class="icon">🔔</span> Notification Preferences
+            </div>
+            
+            <div class="toggle-option">
+              <div>
+                <div class="toggle-label">Email Notifications</div>
+                <div class="toggle-description">Receive financial insights and recommendations via email</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="emailNotifications" name="emailNotifications" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-option">
+              <div>
+                <div class="toggle-label">Income Alerts</div>
+                <div class="toggle-description">Get notified when you receive payments</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="incomeAlerts" name="incomeAlerts" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-option">
+              <div>
+                <div class="toggle-label">Expense Alerts</div>
+                <div class="toggle-description">Get notified about recurring expenses and due dates</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="expenseAlerts" name="expenseAlerts" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-option">
+              <div>
+                <div class="toggle-label">Opportunity Recommendations</div>
+                <div class="toggle-description">Receive notifications about new income opportunities</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="opportunityAlerts" name="opportunityAlerts" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <div class="form-section-title">
+              <span class="icon">🔐</span> Security
+            </div>
+            
+            <div class="form-group">
+              <label for="currentPassword">Current Password</label>
+              <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter only if changing password">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+              </div>
+              
+              <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+              </div>
+            </div>
+            
+            <div class="toggle-option">
+              <div>
+                <div class="toggle-label">Two-Factor Authentication</div>
+                <div class="toggle-description">Add an extra layer of security to your account</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="twoFactorAuth" name="twoFactorAuth">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="button button-outline" id="cancelButton">Cancel</button>
+            <button type="submit" class="button" id="saveButton">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('creativeCashUser') || '{}');
+      if (!userData.isLoggedIn) {
+        window.location.href = '/login.html';
+        return;
+      }
+      
+      // Update profile information
+      document.getElementById('userDisplayName').textContent = userData.fullName || 'User';
+      document.getElementById('profileName').textContent = userData.fullName || 'User Name';
+      document.getElementById('profileEmail').textContent = userData.email || 'user@example.com';
+      
+      // Set avatar initial
+      const initial = userData.fullName ? userData.fullName.charAt(0).toUpperCase() : 'U';
+      document.getElementById('avatarInitial').textContent = initial;
+      
+      // Fill form with user data
+      document.getElementById('fullName').value = userData.fullName || '';
+      document.getElementById('email').value = userData.email || '';
+      document.getElementById('profession').value = userData.profession || 'freelance-writer';
+      document.getElementById('bio').value = userData.bio || '';
+      
+      // Handle form submission
+      document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const profession = document.getElementById('profession').value;
+        const bio = document.getElementById('bio').value;
+        const emailNotifications = document.getElementById('emailNotifications').checked;
+        const incomeAlerts = document.getElementById('incomeAlerts').checked;
+        const expenseAlerts = document.getElementById('expenseAlerts').checked;
+        const opportunityAlerts = document.getElementById('opportunityAlerts').checked;
+        const twoFactorAuth = document.getElementById('twoFactorAuth').checked;
+        
+        // Check password change
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (newPassword && newPassword !== confirmPassword) {
+          alert('New passwords do not match.');
+          return;
+        }
+        
+        // Update user data
+        userData.fullName = fullName;
+        userData.email = email;
+        userData.profession = profession;
+        userData.bio = bio;
+        userData.preferences = {
+          emailNotifications,
+          incomeAlerts,
+          expenseAlerts,
+          opportunityAlerts,
+          twoFactorAuth
+        };
+        
+        // Save updated user data
+        localStorage.setItem('creativeCashUser', JSON.stringify(userData));
+        
+        // Show success message
+        const successAlert = document.getElementById('successAlert');
+        successAlert.style.display = 'block';
+        
+        // Update displayed name and avatar
+        document.getElementById('userDisplayName').textContent = fullName;
+        document.getElementById('profileName').textContent = fullName;
+        document.getElementById('avatarInitial').textContent = fullName.charAt(0).toUpperCase();
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          successAlert.style.display = 'none';
+        }, 3000);
+      });
+      
+      // Handle cancel button
+      document.getElementById('cancelButton').addEventListener('click', function() {
+        window.location.href = '/dashboard.html';
+      });
+      
+      // Handle logout
+      document.getElementById('logoutButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Update user data
+        userData.isLoggedIn = false;
+        localStorage.setItem('creativeCashUser', JSON.stringify(userData));
+        
+        // Redirect to login page
+        window.location.href = '/login.html';
+      });
+    });
+  </script>
+</body>
+</html> 

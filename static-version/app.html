@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - App</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #5c6bc0;
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+    }
+    .nav-link {
+      color: #5c6bc0;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .nav-link:hover {
+      background-color: #e8eaf6;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #5c6bc0;
+      font-size: 1.2rem;
+    }
+    .card-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+    .transactions {
+      grid-column: span 2;
+    }
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+    .transaction-date {
+      color: #757575;
+      font-size: 0.9rem;
+    }
+    .transaction-amount {
+      font-weight: bold;
+    }
+    .income {
+      color: #4caf50;
+    }
+    .expense {
+      color: #f44336;
+    }
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(92, 107, 192, 0.3);
+      border-radius: 50%;
+      border-top-color: #5c6bc0;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .message {
+      text-align: center;
+      padding: 2rem;
+      background-color: #e8eaf6;
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo">CreativeCash AI</div>
+      <nav>
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="#" class="nav-link">Transactions</a>
+        <a href="#" class="nav-link">Reports</a>
+        <a href="#" class="nav-link">Settings</a>
+        <a href="/" class="nav-link">Logout</a>
+      </nav>
+    </header>
+    
+    <div class="message">
+      <h2>Welcome to CreativeCash AI!</h2>
+      <p>This is a static preview of the application. The full version is coming soon.</p>
+      <p>In the meantime, you can explore this demo interface.</p>
+    </div>
+    
+    <div class="dashboard">
+      <div class="card">
+        <h2>Total Income</h2>
+        <div class="card-value">$12,450.00</div>
+        <p>Year to date</p>
+      </div>
+      
+      <div class="card">
+        <h2>Expenses</h2>
+        <div class="card-value">$4,320.00</div>
+        <p>Year to date</p>
+      </div>
+      
+      <div class="card">
+        <h2>Net Profit</h2>
+        <div class="card-value">$8,130.00</div>
+        <p>Year to date</p>
+      </div>
+      
+      <div class="card">
+        <h2>Upcoming Tax</h2>
+        <div class="card-value">$2,032.50</div>
+        <p>Estimated</p>
+      </div>
+      
+      <div class="card transactions">
+        <h2>Recent Transactions</h2>
+        <div class="transaction-item">
+          <div>
+            <div>Client Payment - ABC Corp</div>
+            <div class="transaction-date">May 15, 2023</div>
+          </div>
+          <div class="transaction-amount income">+$2,500.00</div>
+        </div>
+        <div class="transaction-item">
+          <div>
+            <div>Software Subscription</div>
+            <div class="transaction-date">May 12, 2023</div>
+          </div>
+          <div class="transaction-amount expense">-$49.99</div>
+        </div>
+        <div class="transaction-item">
+          <div>
+            <div>Client Payment - XYZ Inc</div>
+            <div class="transaction-date">May 10, 2023</div>
+          </div>
+          <div class="transaction-amount income">+$1,800.00</div>
+        </div>
+        <div class="transaction-item">
+          <div>
+            <div>Office Supplies</div>
+            <div class="transaction-date">May 8, 2023</div>
+          </div>
+          <div class="transaction-amount expense">-$125.75</div>
+        </div>
+        <div class="transaction-item">
+          <div>
+            <div>Client Payment - 123 Design</div>
+            <div class="transaction-date">May 5, 2023</div>
+          </div>
+          <div class="transaction-amount income">+$950.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Simulate loading data
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('App loaded');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Transactions</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+    .user-menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      width: 200px;
+      z-index: 10;
+    }
+    .user-menu-content a {
+      display: block;
+      color: #333;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .user-menu-content a:hover {
+      background-color: #f5f7fa;
+    }
+    .user-menu:hover .user-menu-content {
+      display: block;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2rem;
+      margin: 0;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .button-outline {
+      background-color: transparent;
+      color: #5c6bc0;
+      border: 1px solid #5c6bc0;
+    }
+    .button-outline:hover {
+      background-color: #f0f2ff;
+    }
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .filter-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .filter-select {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: white;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      background-color: white;
+    }
+    .search-box input {
+      border: none;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      width: 200px;
+    }
+    .search-box input:focus {
+      outline: none;
+    }
+    .search-button {
+      background-color: #f5f7fa;
+      border: none;
+      padding: 0.5rem 0.8rem;
+      cursor: pointer;
+    }
+    .transactions-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .transactions-table th {
+      text-align: left;
+      padding: 1rem 1.5rem;
+      background-color: #f5f7fa;
+      border-bottom: 1px solid #eee;
+      color: #666;
+      font-weight: 500;
+    }
+    .transactions-table td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .transactions-table tr:last-child td {
+      border-bottom: none;
+    }
+    .transactions-table tr:hover {
+      background-color: #f9fafc;
+    }
+    .transaction-amount {
+      font-weight: 600;
+    }
+    .transaction-amount.income {
+      color: #4caf50;
+    }
+    .transaction-amount.expense {
+      color: #f44336;
+    }
+    .transaction-category {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      background-color: #f0f2ff;
+      color: #5c6bc0;
+    }
+    .transaction-category.income {
+      background-color: #e8f5e9;
+      color: #4caf50;
+    }
+    .transaction-category.expense {
+      background-color: #ffebee;
+      color: #f44336;
+    }
+    .transaction-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .action-button {
+      color: #5c6bc0;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.3rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .action-button:hover {
+      background-color: #f0f2ff;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .pagination-button {
+      background-color: white;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 0.5rem 1rem;
+      margin: 0 0.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .pagination-button:hover, .pagination-button.active {
+      background-color: #5c6bc0;
+      color: white;
+      border-color: #5c6bc0;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: white;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .modal-title {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: 500;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #3f51b5;
+      box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+    }
+    .close-button {
+      background-color: transparent;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-size: 1.5rem;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .filter-group {
+        width: 100%;
+      }
+      .search-box {
+        width: 100%;
+      }
+      .search-box input {
+        width: 100%;
+      }
+      .transactions-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/transactions.html">Transactions</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/features.html">Features</a>
+    </nav>
+    <div class="user-menu">
+      <span id="userDisplayName">User</span>
+      <div class="user-menu-content">
+        <a href="/profile.html">Profile</a>
+        <a href="#" id="logoutButton">Logout</a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="page-header">
+      <h1>Transactions</h1>
+      <button class="button" id="addTransactionButton">Add Transaction</button>
+    </div>
+    
+    <div class="filters">
+      <div class="filter-group">
+        <div class="filter-label">Type:</div>
+        <select class="filter-select" id="typeFilter">
+          <option value="all">All</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <div class="filter-label">Date:</div>
+        <select class="filter-select" id="dateFilter">
+          <option value="all">All Time</option>
+          <option value="this-month">This Month</option>
+          <option value="last-month">Last Month</option>
+          <option value="this-year">This Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <div class="filter-label">Category:</div>
+        <select class="filter-select" id="categoryFilter">
+          <option value="all">All Categories</option>
+          <option value="client-work">Client Work</option>
+          <option value="freelance">Freelance</option>
+          <option value="subscription">Subscription</option>
+          <option value="supplies">Supplies</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="search-box">
+        <input type="text" placeholder="Search transactions..." id="searchInput">
+        <button class="search-button">🔍</button>
+      </div>
+    </div>
+    
+    <table class="transactions-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="transactionsTableBody">
+        <!-- Transactions will be added by JavaScript -->
+      </tbody>
+    </table>
+    
+    <div class="pagination">
+      <button class="pagination-button">1</button>
+      <button class="pagination-button active">2</button>
+      <button class="pagination-button">3</button>
+      <button class="pagination-button">Next →</button>
+    </div>
+  </div>
+  
+  <!-- Add Transaction Modal -->
+  <div class="modal" id="transactionModal">
+    <div class="modal-content">
+      <button class="close-button" id="closeModalButton">&times;</button>
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Add Transaction</h3>
+      </div>
+      <div class="modal-body">
+        <form id="transactionForm">
+          <div class="form-group">
+            <label for="transactionType">Type</label>
+            <select id="transactionType" name="type" required>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="transactionDescription">Description</label>
+            <input type="text" id="transactionDescription" name="description" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="transactionCategory">Category</label>
+            <select id="transactionCategory" name="category" required>
+              <option value="client-work">Client Work</option>
+              <option value="freelance">Freelance</option>
+              <option value="subscription">Subscription</option>
+              <option value="supplies">Supplies</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="transactionAmount">Amount ($)</label>
+            <input type="number" id="transactionAmount" name="amount" step="0.01" min="0" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="transactionDate">Date</label>
+            <input type="date" id="transactionDate" name="date" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="transactionNotes">Notes (Optional)</label>
+            <textarea id="transactionNotes" name="notes" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="button button-outline" id="cancelButton">Cancel</button>
+        <button class="button" id="saveTransactionButton">Save Transaction</button>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('creativeCashUser') || '{}');
+      if (!userData.isLoggedIn) {
+        window.location.href = '/login.html';
+        return;
+      }
+      
+      // Update user display name
+      document.getElementById('userDisplayName').textContent = userData.fullName || 'User';
+      
+      // Handle logout
+      document.getElementById('logoutButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Update user data
+        userData.isLoggedIn = false;
+        localStorage.setItem('creativeCashUser', JSON.stringify(userData));
+        
+        // Redirect to login page
+        window.location.href = '/login.html';
+      });
+      
+      // Format currency
+      const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2
+        }).format(amount);
+      };
+      
+      // Format date
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+      };
+      
+      // Get category label
+      const getCategoryLabel = (categoryValue) => {
+        const categories = {
+          'client-work': 'Client Work',
+          'freelance': 'Freelance',
+          'subscription': 'Subscription',
+          'supplies': 'Supplies',
+          'other': 'Other'
+        };
+        
+        return categories[categoryValue] || categoryValue;
+      };
+      
+      // Load transactions
+      const loadTransactions = () => {
+        // Simulate API call to get transactions
+        setTimeout(() => {
+          const transactions = [
+            { id: 1, date: '2023-08-15', description: 'Client Project - XYZ Corp', category: 'client-work', amount: 2500, type: 'income' },
+            { id: 2, date: '2023-08-12', description: 'Adobe Creative Cloud', category: 'subscription', amount: 52.99, type: 'expense' },
+            { id: 3, date: '2023-08-10', description: 'Freelance Writing - Blog Post', category: 'freelance', amount: 350, type: 'income' },
+            { id: 4, date: '2023-08-05', description: 'Office Supplies', category: 'supplies', amount: 87.43, type: 'expense' },
+            { id: 5, date: '2023-08-01', description: 'Website Design Project', category: 'client-work', amount: 1800, type: 'income' },
+            { id: 6, date: '2023-07-28', description: 'Canva Pro Subscription', category: 'subscription', amount: 12.99, type: 'expense' },
+            { id: 7, date: '2023-07-25', description: 'Logo Design - ABC Startup', category: 'client-work', amount: 750, type: 'income' },
+            { id: 8, date: '2023-07-20', description: 'Co-working Space Rent', category: 'other', amount: 200, type: 'expense' },
+            { id: 9, date: '2023-07-15', description: 'Social Media Management', category: 'client-work', amount: 1200, type: 'income' },
+            { id: 10, date: '2023-07-10', description: 'New Monitor', category: 'supplies', amount: 349.99, type: 'expense' }
+          ];
+          
+          // Apply filters
+          const typeFilter = document.getElementById('typeFilter').value;
+          const categoryFilter = document.getElementById('categoryFilter').value;
+          const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+          
+          let filteredTransactions = [...transactions];
+          
+          if (typeFilter !== 'all') {
+            filteredTransactions = filteredTransactions.filter(t => t.type === typeFilter);
+          }
+          
+          if (categoryFilter !== 'all') {
+            filteredTransactions = filteredTransactions.filter(t => t.category === categoryFilter);
+          }
+          
+          if (searchTerm) {
+            filteredTransactions = filteredTransactions.filter(t => 
+              t.description.toLowerCase().includes(searchTerm) || 
+              getCategoryLabel(t.category).toLowerCase().includes(searchTerm)
+            );
+          }
+          
+          // Render transactions
+          const tableBody = document.getElementById('transactionsTableBody');
+          tableBody.innerHTML = '';
+          
+          filteredTransactions.forEach(transaction => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+              <td>${formatDate(transaction.date)}</td>
+              <td>${transaction.description}</td>
+              <td><span class="transaction-category ${transaction.type}">${getCategoryLabel(transaction.category)}</span></td>
+              <td class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'}${formatCurrency(transaction.amount)}</td>
+              <td class="transaction-actions">
+                <button class="action-button edit-button" data-id="${transaction.id}">✏️</button>
+                <button class="action-button delete-button" data-id="${transaction.id}">🗑️</button>
+              </td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+          
+          // Add event listeners to edit and delete buttons
+          document.querySelectorAll('.edit-button').forEach(button => {
+            button.addEventListener('click', function() {
+              const transactionId = this.getAttribute('data-id');
+              openEditModal(transactionId);
+            });
+          });
+          
+          document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function() {
+              const transactionId = this.getAttribute('data-id');
+              if (confirm('Are you sure you want to delete this transaction?')) {
+                deleteTransaction(transactionId);
+              }
+            });
+          });
+        }, 500);
+      };
+      
+      // Open edit modal
+      const openEditModal = (transactionId) => {
+        // In a real app, you would fetch the transaction details from the server
+        // For demo, we'll use hardcoded data
+        const transaction = {
+          id: transactionId,
+          type: 'income',
+          description: 'Client Project - XYZ Corp',
+          category: 'client-work',
+          amount: 2500,
+          date: '2023-08-15',
+          notes: 'Website redesign project for XYZ Corporation.'
+        };
+        
+        // Set modal title
+        document.getElementById('modalTitle').textContent = 'Edit Transaction';
+        
+        // Fill form with transaction data
+        document.getElementById('transactionType').value = transaction.type;
+        document.getElementById('transactionDescription').value = transaction.description;
+        document.getElementById('transactionCategory').value = transaction.category;
+        document.getElementById('transactionAmount').value = transaction.amount;
+        document.getElementById('transactionDate').value = transaction.date;
+        document.getElementById('transactionNotes').value = transaction.notes || '';
+        
+        // Store transaction ID for update
+        document.getElementById('transactionForm').setAttribute('data-id', transactionId);
+        
+        // Show modal
+        document.getElementById('transactionModal').style.display = 'flex';
+      };
+      
+      // Delete transaction
+      const deleteTransaction = (transactionId) => {
+        // In a real app, you would send a delete request to the server
+        console.log('Deleting transaction:', transactionId);
+        
+        // For demo, just reload the transactions
+        loadTransactions();
+      };
+      
+      // Add transaction
+      const addTransaction = () => {
+        // Get form values
+        const type = document.getElementById('transactionType').value;
+        const description = document.getElementById('transactionDescription').value;
+        const category = document.getElementById('transactionCategory').value;
+        const amount = parseFloat(document.getElementById('transactionAmount').value);
+        const date = document.getElementById('transactionDate').value;
+        const notes = document.getElementById('transactionNotes').value;
+        
+        // In a real app, you would send this data to the server
+        console.log('Adding transaction:', { type, description, category, amount, date, notes });
+        
+        // Close modal
+        document.getElementById('transactionModal').style.display = 'none';
+        
+        // Reset form
+        document.getElementById('transactionForm').reset();
+        
+        // Reload transactions
+        loadTransactions();
+      };
+      
+      // Initialize page
+      loadTransactions();
+      
+      // Add event listeners for filters
+      document.getElementById('typeFilter').addEventListener('change', loadTransactions);
+      document.getElementById('categoryFilter').addEventListener('change', loadTransactions);
+      document.getElementById('dateFilter').addEventListener('change', loadTransactions);
+      
+      // Add event listener for search
+      document.getElementById('searchInput').addEventListener('input', loadTransactions);
+      
+      // Add event listener for add transaction button
+      document.getElementById('addTransactionButton').addEventListener('click', function() {
+        // Reset form
+        document.getElementById('transactionForm').reset();
+        document.getElementById('transactionForm').removeAttribute('data-id');
+        
+        // Set today's date as default
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('transactionDate').value = today;
+        
+        // Set modal title
+        document.getElementById('modalTitle').textContent = 'Add Transaction';
+        
+        // Show modal
+        document.getElementById('transactionModal').style.display = 'flex';
+      });
+      
+      // Add event listener for save transaction button
+      document.getElementById('saveTransactionButton').addEventListener('click', function() {
+        // Validate form
+        const form = document.getElementById('transactionForm');
+        if (form.checkValidity()) {
+          addTransaction();
+        } else {
+          form.reportValidity();
+        }
+      });
+      
+      // Add event listeners for modal close buttons
+      document.getElementById('closeModalButton').addEventListener('click', function() {
+        document.getElementById('transactionModal').style.display = 'none';
+      });
+      
+      document.getElementById('cancelButton').addEventListener('click', function() {
+        document.getElementById('transactionModal').style.display = 'none';
+      });
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', function(event) {
+        const modal = document.getElementById('transactionModal');
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

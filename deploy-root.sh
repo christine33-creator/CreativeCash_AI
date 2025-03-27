@@ -11,8 +11,15 @@ npm run build:web
 if [ $? -eq 0 ]; then
   echo "Build successful!"
   
-  # Deploy the entire project (not just web-build)
+  # Copy vercel.json to web-build if it doesn't exist
+  if [ ! -f "web-build/vercel.json" ]; then
+    echo "Copying vercel.json to web-build..."
+    cp vercel.json web-build/
+  fi
+  
+  # Deploy just the web-build directory
   echo "Deploying to Vercel..."
+  cd web-build
   npx vercel --prod
 else
   echo "Build failed."

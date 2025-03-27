@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Creative Opportunities</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    .filters {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .filter-button {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-button:hover, .filter-button.active {
+      background-color: #3f51b5;
+      color: white;
+      border-color: #3f51b5;
+    }
+    .opportunities {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+    .opportunity-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .opportunity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    .opportunity-image {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+    .opportunity-content {
+      padding: 1.5rem;
+    }
+    .opportunity-title {
+      font-size: 1.3rem;
+      color: #3f51b5;
+      margin-bottom: 0.5rem;
+    }
+    .opportunity-category {
+      display: inline-block;
+      background-color: #e8eaf6;
+      color: #3f51b5;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .opportunity-description {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .opportunity-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #888;
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: background-color 0.3s;
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .ai-match {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .match-percentage {
+      background-color: #4caf50;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+      font-weight: bold;
+    }
+    .match-text {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+    .pagination-button {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+      margin: 0 0.25rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .pagination-button:hover, .pagination-button.active {
+      background-color: #3f51b5;
+      color: white;
+      border-color: #3f51b5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/features.html">Features</a>
+      <a href="/app">Dashboard</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Creative Income Opportunities</h1>
+    <p class="subtitle">Discover new ways to earn money with your creative skills</p>
+    
+    <div class="filters">
+      <button class="filter-button active">All Categories</button>
+      <button class="filter-button">Freelance</button>
+      <button class="filter-button">Remote Jobs</button>
+      <button class="filter-button">Passive Income</button>
+      <button class="filter-button">Digital Products</button>
+      <button class="filter-button">Courses</button>
+      <button class="filter-button">Marketplaces</button>
+    </div>
+    
+    <div class="opportunities">
+      <!-- Opportunity 1 -->
+      <div class="opportunity-card">
+        <div class="opportunity-image" style="background-image: url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');"></div>
+        <div class="opportunity-content">
+          <div class="ai-match">
+            <span class="match-percentage">98%</span>
+            <span class="match-text">AI Match</span>
+          </div>
+          <h3 class="opportunity-title">Content Writing for Tech Startups</h3>
+          <span class="opportunity-category">Freelance</span>
+          <p class="opportunity-description">Create engaging blog posts, website content, and marketing materials for innovative tech startups. Perfect for writers with technical knowledge.</p>
+          <div class="opportunity-meta">
+            <span>$50-75/hour</span>
+            <span>Remote</span>
+          </div>
+          <a href="#" class="button">View Opportunity</a>
+        </div>
+      </div>
+      
+      <!-- Opportunity 2 -->
+      <div class="opportunity-card">
+        <div class="opportunity-image" style="background-image: url('https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80');"></div>
+        <div class="opportunity-content">
+          <div class="ai-match">
+            <span class="match-percentage">95%</span>
+            <span class="match-text">AI Match</span>
+          </div>
+          <h3 class="opportunity-title">UI/UX Design Course Creation</h3>
+          <span class="opportunity-category">Digital Products</span>
+          <p class="opportunity-description">Create and sell a comprehensive UI/UX design course on platforms like Udemy or Skillshare. Share your expertise and earn passive income.</p>
+          <div class="opportunity-meta">
+            <span>$2,000-5,000/month</span>
+            <span>Passive Income</span>
+          </div>
+          <a href="#" class="button">View Opportunity</a>
+        </div>
+      </div>
+      
+      <!-- Opportunity 3 -->
+      <div class="opportunity-card">
+        <div class="opportunity-image" style="background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');"></div>
+        <div class="opportunity-content">
+          <div class="ai-match">
+            <span class="match-percentage">92%</span>
+            <span class="match-text">AI Match</span>
+          </div>
+          <h3 class="opportunity-title">Social Media Management</h3>
+          <span class="opportunity-category">Remote Jobs</span>
+          <p class="opportunity-description">Manage social media accounts for small businesses and entrepreneurs. Create content, schedule posts, and engage with followers.</p>
+          <div class="opportunity-meta">
+            <span>$3,000-4,500/month</span>
+            <span>Part-time/Full-time</span>
+          </div>
+          <a href="#" class="button">View Opportunity</a>
+        </div>
+      </div>
+      
+      <!-- Opportunity 4 -->
+      <div class="opportunity-card">
+        <div class="opportunity-image" style="background-image: url('https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80');"></div>
+        <div class="opportunity-content">
+          <div class="ai-match">
+            <span class="match-percentage">90%</span>
+            <span class="match-text">AI Match</span>
+          </div>
+          <h3 class="opportunity-title">Print-on-Demand Merchandise</h3>
+          <span class="opportunity-category">Passive Income</span>
+          <p class="opportunity-description">Create designs for t-shirts, mugs, and other merchandise sold through print-on-demand services like Printful or Redbubble.</p>
+          <div class="opportunity-meta">
+            <span>$500-2,000/month</span>
+            <span>Passive Income</span>
+          </div>
+          <a href="#" class="button">View Opportunity</a>
+        </div>
+      </div>
+      
+      <!-- Opportunity 5 -->
+      <div class="opportunity-card">
+        <div class="opportunity-image" style="background-image: url('https://images.unsplash.com/photo-1593642532400-2682810df593?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80');"></div>
+        <div class="opportunity-content">
+          <div class="ai-match">
+            <span class="match-percentage">88%</span>
+            <span class="match-text">AI Match</span>
+          </div>
+          <h3 class="opportunity-title">Web Development for E-commerce</h3>
+          <span class="opportunity-category">Freelance</span>
+          <p class="opportunity-description">Build custom e-commerce websites for small businesses using platforms like Shopify, WooCommerce, or custom solutions.</p>
+          <div class="opportunity-meta">
+            <span>$2,000-5,000/project</span>
+            <span>Project-based</span>
+          </div>
+          <a href="#" class="button">View Opportunity</a>
+        </div>
+      </div>
+      
+      <!-- Opportunity 6 -->
+      <div class="opportunity-card">
+        <div class="opportunity-image" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');"></div>
+        <div class="opportunity-content">
+          <div class="ai-match">
+            <span class="match-percentage">85%</span>
+            <span class="match-text">AI Match</span>
+          </div>
+          <h3 class="opportunity-title">Stock Photography</h3>
+          <span class="opportunity-category">Marketplaces</span>
+          <p class="opportunity-description">Sell your photography on stock photo websites like Shutterstock, Adobe Stock, or Getty Images. Create a portfolio of high-quality images.</p>
+          <div class="opportunity-meta">
+            <span>$200-1,000/month</span>
+            <span>Passive Income</span>
+          </div>
+          <a href="#" class="button">View Opportunity</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pagination">
+      <button class="pagination-button active">1</button>
+      <button class="pagination-button">2</button>
+      <button class="pagination-button">3</button>
+      <button class="pagination-button">4</button>
+      <button class="pagination-button">Next →</button>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    // Simple filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterButtons = document.querySelectorAll('.filter-button');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // In a real app, this would filter the opportunities
+          console.log('Filter selected:', this.textContent);
+        });
+      });
+    });
+  </script>
+</body>
+</html> 

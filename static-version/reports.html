@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Reports</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+    .user-menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      width: 200px;
+      z-index: 10;
+    }
+    .user-menu-content a {
+      display: block;
+      color: #333;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .user-menu-content a:hover {
+      background-color: #f5f7fa;
+    }
+    .user-menu:hover .user-menu-content {
+      display: block;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2rem;
+      margin: 0;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .button-outline {
+      background-color: transparent;
+      color: #5c6bc0;
+      border: 1px solid #5c6bc0;
+    }
+    .button-outline:hover {
+      background-color: #f0f2ff;
+    }
+    .report-filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .filter-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .filter-select {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: white;
+    }
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .chart-container {
+      padding: 1.5rem;
+      height: 400px;
+    }
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .report-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    .report-card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .report-card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .report-card-content {
+      padding: 1.5rem;
+      height: 300px;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .report-filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .report-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/transactions.html">Transactions</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/features.html">Features</a>
+    </nav>
+    <div class="user-menu">
+      <span id="userDisplayName">User</span>
+      <div class="user-menu-content">
+        <a href="/profile.html">Profile</a>
+        <a href="#" id="logoutButton">Logout</a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="page-header">
+      <h1>Financial Reports</h1>
+      <div>
+        <button class="button button-outline" id="exportButton">Export Reports</button>
+        <button class="button" id="printButton">Print</button>
+      </div>
+    </div>
+    
+    <div class="report-filters">
+      <div class="filter-group">
+        <span class="filter-label">Date Range:</span>
+        <select id="dateRangeFilter" class="filter-select">
+          <option value="last30days">Last 30 Days</option>
+          <option value="last90days">Last 90 Days</option>
+          <option value="thisYear">This Year</option>
+          <option value="lastYear">Last Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <span class="filter-label">Report Type:</span>
+        <select id="reportTypeFilter" class="filter-select">
+          <option value="all">All Reports</option>
+          <option value="income">Income Reports</option>
+          <option value="expense">Expense Reports</option>
+          <option value="tax">Tax Reports</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <button class="button button-outline" id="refreshButton">Refresh</button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Income vs. Expenses</h2>
+        <button class="button button-outline">Download</button>
+      </div>
+      <div class="chart-container">
+        <canvas id="incomeExpenseChart"></canvas>
+      </div>
+    </div>
+    
+    <div class="report-grid">
+      <div class="report-card">
+        <div class="report-card-header">
+          <h3 class="report-card-title">Income by Category</h3>
+        </div>
+        <div class="report-card-content">
+          <canvas id="incomeCategoryChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="report-card">
+        <div class="report-card-header">
+          <h3 class="report-card-title">Expenses by Category</h3>
+        </div>
+        <div class="report-card-content">
+          <canvas id="expenseCategoryChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="report-card">
+        <div class="report-card-header">
+          <h3 class="report-card-title">Monthly Net Income</h3>
+        </div>
+        <div class="report-card-content">
+          <canvas id="netIncomeChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="report-card">
+        <div class="report-card-header">
+          <h3 class="report-card-title">Tax Deductions</h3>
+        </div>
+        <div class="report-card-content">
+          <canvas id="taxDeductionsChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Income Forecast</h2>
+        <button class="button button-outline">Download</button>
+      </div>
+      <div class="chart-container">
+        <canvas id="forecastChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('creativeCashUser') || '{}');
+      if (!userData.isLoggedIn) {
+        window.location.href = '/login.html';
+        return;
+      }
+      
+      // Update user display name
+      document.getElementById('userDisplayName').textContent = userData.fullName || 'User';
+      
+      // Format currency
+      const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2
+        }).format(amount);
+      };
+      
+      // Load report data
+      const loadReportData = () => {
+        // Simulate API call to get report data
+        setTimeout(() => {
+          const reportData = {
+            incomeExpense: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              income: [2100, 2300, 2500, 2700, 3100, 3500, 3800, 4850],
+              expenses: [1200, 1350, 1400, 1500, 1600, 1750, 1900, 2100]
+            },
+            incomeByCategory: {
+              labels: ['Freelance Writing', 'Web Design', 'Consulting', 'Digital Products', 'Other'],
+              data: [40, 25, 15, 12, 8]
+            },
+            expensesByCategory: {
+              labels: ['Software', 'Office Supplies', 'Marketing', 'Professional Services', 'Utilities', 'Other'],
+              data: [30, 15, 20, 18, 10, 7]
+            },
+            netIncome: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              data: [900, 950, 1100, 1200, 1500, 1750, 1900, 2750]
+            },
+            taxDeductions: {
+              labels: ['Home Office', 'Software', 'Equipment', 'Professional Development', 'Health Insurance', 'Other'],
+              data: [35, 25, 15, 10, 10, 5]
+            },
+            forecast: {
+              labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+              actual: [4850],
+              predicted: [5200, 5600, 6100, 6500, 6800]
+            }
+          };
+          
+          // Render income vs expense chart
+          const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+          new Chart(incomeExpenseCtx, {
+            type: 'bar',
+            data: {
+              labels: reportData.incomeExpense.labels,
+              datasets: [
+                {
+                  label: 'Income',
+                  data: reportData.incomeExpense.income,
+                  backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                  borderColor: 'rgba(76, 175, 80, 1)',
+                  borderWidth: 1
+                },
+                {
+                  label: 'Expenses',
+                  data: reportData.incomeExpense.expenses,
+                  backgroundColor: 'rgba(244, 67, 54, 0.7)',
+                  borderColor: 'rgba(244, 67, 54, 1)',
+                  borderWidth: 1
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return '$' + value.toLocaleString();
+                    }
+                  }
+                }
+              }
+            }
+          });
+          
+          // Render income by category chart
+          const incomeCategoryCtx = document.getElementById('incomeCategoryChart').getContext('2d');
+          new Chart(incomeCategoryCtx, {
+            type: 'doughnut',
+            data: {
+              labels: reportData.incomeByCategory.labels,
+              datasets: [{
+                data: reportData.incomeByCategory.data,
+                backgroundColor: [
+                  'rgba(92, 107, 192, 0.7)',
+                  'rgba(66, 165, 245, 0.7)',
+                  'rgba(38, 198, 218, 0.7)',
+                  'rgba(0, 188, 212, 0.7)',
+                  'rgba(0, 150, 136, 0.7)'
+                ],
+                borderColor: [
+                  'rgba(92, 107, 192, 1)',
+                  'rgba(66, 165, 245, 1)',
+                  'rgba(38, 198, 218, 1)',
+                  'rgba(0, 188, 212, 1)',
+                  'rgba(0, 150, 136, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              }
+            }
+          });
+          
+          // Render expenses by category chart
+          const expenseCategoryCtx = document.getElementById('expenseCategoryChart').getContext('2d');
+          new Chart(expenseCategoryCtx, {
+            type: 'doughnut',
+            data: {
+              labels: reportData.expensesByCategory.labels,
+              datasets: [{
+                data: reportData.expensesByCategory.data,
+                backgroundColor: [
+                  'rgba(244, 67, 54, 0.7)',
+                  'rgba(233, 30, 99, 0.7)',
+                  'rgba(156, 39, 176, 0.7)',
+                  'rgba(103, 58, 183, 0.7)',
+                  'rgba(63, 81, 181, 0.7)',
+                  'rgba(33, 150, 243, 0.7)'
+                ],
+                borderColor: [
+                  'rgba(244, 67, 54, 1)',
+                  'rgba(233, 30, 99, 1)',
+                  'rgba(156, 39, 176, 1)',
+                  'rgba(103, 58, 183, 1)',
+                  'rgba(63, 81, 181, 1)',
+                  'rgba(33, 150, 243, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              }
+            }
+          });
+          
+          // Render net income chart
+          const netIncomeCtx = document.getElementById('netIncomeChart').getContext('2d');
+          new Chart(netIncomeCtx, {
+            type: 'line',
+            data: {
+              labels: reportData.netIncome.labels,
+              datasets: [{
+                label: 'Net Income',
+                data: reportData.netIncome.data,
+                backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                borderColor: 'rgba(76, 175, 80, 1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return '$' + value.toLocaleString();
+                    }
+                  }
+                }
+              }
+            }
+          });
+          
+          // Render tax deductions chart
+          const taxDeductionsCtx = document.getElementById('taxDeductionsChart').getContext('2d');
+          new Chart(taxDeductionsCtx, {
+            type: 'pie',
+            data: {
+              labels: reportData.taxDeductions.labels,
+              datasets: [{
+                data: reportData.taxDeductions.data,
+                backgroundColor: [
+                  'rgba(255, 193, 7, 0.7)',
+                  'rgba(255, 152, 0, 0.7)',
+                  'rgba(255, 87, 34, 0.7)',
+                  'rgba(121, 85, 72, 0.7)',
+                  'rgba(158, 158, 158, 0.7)',
+                  'rgba(96, 125, 139, 0.7)'
+                ],
+                borderColor: [
+                  'rgba(255, 193, 7, 1)',
+                  'rgba(255, 152, 0, 1)',
+                  'rgba(255, 87, 34, 1)',
+                  'rgba(121, 85, 72, 1)',
+                  'rgba(158, 158, 158, 1)',
+                  'rgba(96, 125, 139, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              }
+            }
+          });
+          
+          // Render forecast chart
+          const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+          new Chart(forecastCtx, {
+            type: 'line',
+            data: {
+              labels: [...reportData.incomeExpense.labels, ...reportData.forecast.labels],
+              datasets: [
+                {
+                  label: 'Actual Income',
+                  data: [...reportData.incomeExpense.income, reportData.forecast.actual[0], null, null, null, null, null],
+                  backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                  borderColor: 'rgba(76, 175, 80, 1)',
+                  borderWidth: 2,
+                  fill: false
+                },
+                {
+                  label: 'Predicted Income',
+                  data: [null, null, null, null, null, null, null, null, ...reportData.forecast.predicted],
+                  backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                  borderColor: 'rgba(33, 150, 243, 1)',
+                  borderWidth: 2,
+                  borderDash: [5, 5],
+                  fill: false
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return '$' + value.toLocaleString();
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }, 1000);
+      };
+      
+      // Initialize page
+      loadReportData();
+      
+      // Add event listeners for filters
+      document.getElementById('dateRangeFilter').addEventListener('change', loadReportData);
+      document.getElementById('reportTypeFilter').addEventListener('change', loadReportData);
+      document.getElementById('refreshButton').addEventListener('click', loadReportData);
+      
+      // Add event listener for export button
+      document.getElementById('exportButton').addEventListener('click', function() {
+        alert('Reports exported successfully!');
+      });
+      
+      // Add event listener for print button
+      document.getElementById('printButton').addEventListener('click', function() {
+        window.print();
+      });
+      
+      // Handle logout
+      document.getElementById('logoutButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Update user data
+        userData.isLoggedIn = false;
+        localStorage.setItem('creativeCashUser', JSON.stringify(userData));
+        
+        // Redirect to login page
+        window.location.href = '/login.html';
+      });
+    });
+  </script>
+</body>
+</html> 

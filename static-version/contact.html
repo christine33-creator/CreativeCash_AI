@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Contact Us</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .contact-info {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+    .contact-method {
+      margin-bottom: 2rem;
+    }
+    .contact-method h3 {
+      color: #3f51b5;
+      margin-bottom: 0.5rem;
+    }
+    .contact-method p {
+      color: #555;
+      line-height: 1.6;
+    }
+    .contact-form {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .social-links {
+      display: flex;
+      margin-top: 1rem;
+    }
+    .social-link {
+      display: inline-block;
+      margin-right: 1rem;
+      font-size: 1.5rem;
+      color: #3f51b5;
+      transition: color 0.3s;
+    }
+    .social-link:hover {
+      color: #5c6bc0;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    .success-message {
+      display: none;
+      background-color: #4caf50;
+      color: white;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/features.html">Features</a>
+      <a href="/app">Dashboard</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p class="subtitle">Have questions or feedback? We'd love to hear from you!</p>
+    
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-method">
+          <h3>Email</h3>
+          <p>support@creativecash.ai</p>
+          <p>For general inquiries, please allow 24-48 hours for a response.</p>
+        </div>
+        
+        <div class="contact-method">
+          <h3>Phone</h3>
+          <p>+1 (555) 123-4567</p>
+          <p>Available Monday to Friday, 9am - 5pm EST</p>
+        </div>
+        
+        <div class="contact-method">
+          <h3>Office</h3>
+          <p>
+            CreativeCash AI<br>
+            123 Innovation Drive<br>
+            Suite 456<br>
+            San Francisco, CA 94103
+          </p>
+        </div>
+        
+        <div class="contact-method">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">💻</a>
+            <a href="#" class="social-link">📷</a>
+            <a href="#" class="social-link">🐦</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form">
+        <div class="success-message" id="successMessage">
+          Your message has been sent successfully! We'll get back to you soon.
+        </div>
+        
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject">
+              <option value="general">General Inquiry</option>
+              <option value="support">Technical Support</option>
+              <option value="billing">Billing Question</option>
+              <option value="feedback">Feedback</option>
+              <option value="partnership">Partnership Opportunity</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          
+          <button type="submit" class="button">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contactForm');
+      const successMessage = document.getElementById('successMessage');
+      
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // In a real app, this would send the form data to a server
+        // For now, we'll just simulate a successful submission
+        
+        // Show success message
+        successMessage.style.display = 'block';
+        
+        // Reset form
+        contactForm.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(function() {
+          successMessage.style.display = 'none';
+        }, 5000);
+      });
+    });
+  </script>
+</body>
+</html> 

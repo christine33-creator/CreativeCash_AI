@@ -8,10 +8,15 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build:web": "./build-web.sh",
+    "build:web:webpack": "./build-web-webpack.sh",
+    "build:web:start": "./build-web-start.sh",
+    "build:web:simple": "./build-web-simple.sh",
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
     "deploy": "npx vercel web-build --prod",
+    "deploy:full": "./deploy-full.sh",
+    "deploy:simple": "./deploy-simple.sh",
     "build:web-direct": "webpack --config webpack.config.js --mode=production"
   },
   "dependencies": {

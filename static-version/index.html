@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      text-align: center;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #5c6bc0;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0.5rem;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    .feature {
+      flex: 1 1 300px;
+      margin: 1rem;
+      padding: 1.5rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      text-align: left;
+    }
+    .feature h3 {
+      color: #5c6bc0;
+      margin-top: 0;
+    }
+    .app-status {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #e8eaf6;
+      border-radius: 8px;
+    }
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(92, 107, 192, 0.3);
+      border-radius: 50%;
+      border-top-color: #5c6bc0;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CreativeCash AI</h1>
+    <p>Financial management for freelancers and creative professionals</p>
+    
+    <div class="features">
+      <div class="feature">
+        <h3>Smart Income Tracking</h3>
+        <p>Automatically categorize and track your income from multiple sources.</p>
+      </div>
+      <div class="feature">
+        <h3>AI-Powered Insights</h3>
+        <p>Get personalized financial insights and recommendations based on your spending patterns.</p>
+      </div>
+      <div class="feature">
+        <h3>Tax Optimization</h3>
+        <p>Identify tax deductions and optimize your finances for tax season.</p>
+      </div>
+    </div>
+    
+    <div class="app-status">
+      <h3>App Status</h3>
+      <p>Our mobile app is available now! The web version is currently being deployed.</p>
+      <p><span class="loading"></span> Setting up the environment...</p>
+    </div>
+    
+    <div>
+      <a href="/app" class="button">Launch App</a>
+      <a href="/api/status" class="button">Check API Status</a>
+      <a href="mailto:support@creativecash.ai" class="button">Contact Support</a>
+    </div>
+  </div>
+  
+  <script>
+    // Check if the environment variables are loaded
+    const checkEnvironment = () => {
+      const statusElement = document.querySelector('.app-status p:nth-child(3)');
+      
+      // Simulate environment check
+      setTimeout(() => {
+        statusElement.innerHTML = '<span class="loading"></span> Initializing application...';
+        
+        // Simulate app initialization
+        setTimeout(() => {
+          statusElement.innerHTML = 'The application is ready! <a href="/app" class="button">Launch App</a>';
+        }, 3000);
+      }, 2000);
+    };
+    
+    // Start the environment check when the page loads
+    window.onload = checkEnvironment;
+  </script>
+</body>
+</html>

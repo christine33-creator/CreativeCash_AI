@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Log In</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .container {
+      max-width: 500px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    input:focus {
+      outline: none;
+      border-color: #3f51b5;
+      box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+      width: 100%;
+      text-align: center;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .signup-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .signup-link a {
+      color: #3f51b5;
+      text-decoration: none;
+    }
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+    .forgot-password {
+      text-align: right;
+      margin-top: -1rem;
+      margin-bottom: 1.5rem;
+    }
+    .forgot-password a {
+      color: #3f51b5;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 0.8rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/features.html">Features</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Log In to Your Account</h1>
+    
+    <div class="error-message" id="errorMessage"></div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      
+      <div class="forgot-password">
+        <a href="/forgot-password.html">Forgot password?</a>
+      </div>
+      
+      <button type="submit" class="button">Log In</button>
+    </form>
+    
+    <div class="signup-link">
+      Don't have an account? <a href="/signup.html">Sign Up</a>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // Check if user is already logged in
+      const userData = JSON.parse(localStorage.getItem('creativeCashUser') || '{}');
+      if (userData.isLoggedIn) {
+        window.location.href = '/dashboard.html';
+        return;
+      }
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Reset error message
+        errorMessage.style.display = 'none';
+        
+        // Get form values
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        // Demo credentials for testing
+        if (email === 'demo@creativecash.ai' && password === 'password123') {
+          // Store user data in localStorage (for demo purposes only)
+          const userData = {
+            fullName: 'Demo User',
+            email,
+            isLoggedIn: true,
+            lastLogin: new Date().toISOString()
+          };
+          
+          localStorage.setItem('creativeCashUser', JSON.stringify(userData));
+          
+          // Redirect to dashboard
+          window.location.href = '/dashboard.html';
+        } else {
+          // Check if the user has signed up
+          const storedUserData = JSON.parse(localStorage.getItem('creativeCashUser') || '{}');
+          
+          if (storedUserData.email === email) {
+            // Simulate successful login with stored user
+            storedUserData.isLoggedIn = true;
+            storedUserData.lastLogin = new Date().toISOString();
+            
+            localStorage.setItem('creativeCashUser', JSON.stringify(storedUserData));
+            
+            // Redirect to dashboard
+            window.location.href = '/dashboard.html';
+          } else {
+            // Show error message
+            errorMessage.textContent = 'Invalid email or password. Try demo@creativecash.ai / password123';
+            errorMessage.style.display = 'block';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

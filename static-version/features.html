@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Features</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+    .feature-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #3f51b5;
+    }
+    .feature-title {
+      font-size: 1.5rem;
+      color: #3f51b5;
+      margin-bottom: 1rem;
+    }
+    .feature-description {
+      line-height: 1.6;
+      color: #555;
+    }
+    .coming-soon {
+      background-color: #f8f9fa;
+      border: 2px dashed #ccc;
+    }
+    .coming-soon .feature-icon,
+    .coming-soon .feature-title {
+      color: #888;
+    }
+    .badge {
+      display: inline-block;
+      background-color: #ff9800;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0.5rem;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/features.html">Features</a>
+      <a href="/app">Dashboard</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Features & Roadmap</h1>
+    
+    <div class="feature-grid">
+      <!-- Current Features -->
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Smart Income Tracking</div>
+        <div class="feature-description">
+          Automatically categorize and track your income from multiple sources. Get a clear view of your earnings and identify your most profitable clients and projects.
+        </div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">AI-Powered Insights</div>
+        <div class="feature-description">
+          Get personalized financial insights and recommendations based on your spending patterns. Our AI analyzes your financial data to help you make better decisions.
+        </div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Expense Categorization</div>
+        <div class="feature-description">
+          Automatically categorize your expenses for better financial management. Track business expenses separately from personal spending for easier tax preparation.
+        </div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🧾</div>
+        <div class="feature-title">Tax Optimization</div>
+        <div class="feature-description">
+          Identify tax deductions and optimize your finances for tax season. Get estimates of your tax liability and recommendations for reducing your tax burden.
+        </div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobile App</div>
+        <div class="feature-description">
+          Access your financial data on the go with our mobile app. Track expenses, record income, and get insights wherever you are.
+        </div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">💼</div>
+        <div class="feature-title">Creative Opportunities</div>
+        <div class="feature-description">
+          Discover new income opportunities tailored to your skills and interests. Our AI matches you with potential clients and projects that fit your profile.
+        </div>
+      </div>
+      
+      <!-- Coming Soon Features -->
+      <div class="feature-card coming-soon">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">Advanced Analytics <span class="badge">Coming Soon</span></div>
+        <div class="feature-description">
+          Dive deeper into your financial data with advanced analytics. Visualize trends, forecast future income, and identify areas for improvement.
+        </div>
+      </div>
+      
+      <div class="feature-card coming-soon">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Smart Notifications <span class="badge">Coming Soon</span></div>
+        <div class="feature-description">
+          Get timely reminders about upcoming tax deadlines, invoice due dates, and other important financial events. Never miss a payment or deadline again.
+        </div>
+      </div>
+      
+      <div class="feature-card coming-soon">
+        <div class="feature-icon">📝</div>
+        <div class="feature-title">Invoice Generation <span class="badge">Coming Soon</span></div>
+        <div class="feature-description">
+          Create professional invoices directly from the app. Track payment status and send automatic reminders for overdue invoices.
+        </div>
+      </div>
+      
+      <div class="feature-card coming-soon">
+        <div class="feature-icon">🔄</div>
+        <div class="feature-title">Bank Integration <span class="badge">Coming Soon</span></div>
+        <div class="feature-description">
+          Connect your bank accounts for automatic transaction import. Reduce manual data entry and ensure your financial data is always up to date.
+        </div>
+      </div>
+      
+      <div class="feature-card coming-soon">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Financial Calendar <span class="badge">Coming Soon</span></div>
+        <div class="feature-description">
+          Visualize your income and expenses on a calendar view. Plan for upcoming expenses and track recurring income.
+        </div>
+      </div>
+      
+      <div class="feature-card coming-soon">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Enhanced Security <span class="badge">Coming Soon</span></div>
+        <div class="feature-description">
+          Additional security features including two-factor authentication, biometric login, and end-to-end encryption for all your financial data.
+        </div>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="/app" class="button">Try the Dashboard</a>
+      <a href="/opportunities.html" class="button">Explore Opportunities</a>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+</body>
+</html> 

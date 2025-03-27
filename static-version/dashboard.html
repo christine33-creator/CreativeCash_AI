@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativeCash AI - Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    nav a:hover {
+      opacity: 1;
+    }
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+    .user-menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      width: 200px;
+      z-index: 10;
+    }
+    .user-menu-content a {
+      display: block;
+      color: #333;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .user-menu-content a:hover {
+      background-color: #f5f7fa;
+    }
+    .user-menu:hover .user-menu-content {
+      display: block;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      color: #3f51b5;
+      font-size: 2rem;
+      margin: 0;
+    }
+    .date-range {
+      display: flex;
+      align-items: center;
+    }
+    .date-range select {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .stat-title {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    .trend-up {
+      color: #4caf50;
+    }
+    .trend-down {
+      color: #f44336;
+    }
+    .trend-icon {
+      margin-right: 0.3rem;
+    }
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+    .card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .chart-container {
+      padding: 1.5rem;
+      height: 300px;
+    }
+    .button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #3f51b5;
+    }
+    .button-outline {
+      background-color: transparent;
+      color: #5c6bc0;
+      border: 1px solid #5c6bc0;
+    }
+    .button-outline:hover {
+      background-color: #f0f2ff;
+    }
+    .transactions-list {
+      padding: 0 1.5rem 1.5rem;
+    }
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+    .transaction-details {
+      flex: 1;
+    }
+    .transaction-name {
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .transaction-date {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .transaction-amount {
+      font-weight: 600;
+    }
+    .transaction-amount.income {
+      color: #4caf50;
+    }
+    .transaction-amount.expense {
+      color: #f44336;
+    }
+    .insights-container {
+      margin-top: 2rem;
+    }
+    .insight-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+      border-left: 4px solid #5c6bc0;
+    }
+    .insight-card.high-impact {
+      border-left-color: #f44336;
+    }
+    .insight-card.medium-impact {
+      border-left-color: #ff9800;
+    }
+    .insight-card.low-impact {
+      border-left-color: #4caf50;
+    }
+    .insight-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .insight-description {
+      margin-bottom: 1rem;
+      color: #555;
+    }
+    .insight-action {
+      font-style: italic;
+      color: #3f51b5;
+    }
+    footer {
+      background-color: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .date-range {
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CreativeCash AI</div>
+    <nav>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/transactions.html">Transactions</a>
+      <a href="/opportunities.html">Opportunities</a>
+      <a href="/features.html">Features</a>
+    </nav>
+    <div class="user-menu">
+      <span id="userDisplayName">User</span>
+      <div class="user-menu-content">
+        <a href="/profile.html">Profile</a>
+        <a href="/settings.html">Settings</a>
+        <a href="#" id="logoutButton">Logout</a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="dashboard-header">
+      <h1>Dashboard</h1>
+      <div class="date-range">
+        <span>Period:</span>
+        <select id="periodSelector">
+          <option value="month">This Month</option>
+          <option value="quarter">This Quarter</option>
+          <option value="year">This Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total Income</div>
+        <div class="stat-value" id="totalIncome">$0.00</div>
+        <div class="stat-trend" id="incomeTrend">
+          <span class="trend-icon">↑</span> 0% from last period
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-title">Total Expenses</div>
+        <div class="stat-value" id="totalExpenses">$0.00</div>
+        <div class="stat-trend" id="expensesTrend">
+          <span class="trend-icon">↓</span> 0% from last period
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-title">Net Profit</div>
+        <div class="stat-value" id="netProfit">$0.00</div>
+        <div class="stat-trend" id="profitTrend">
+          <span class="trend-icon">↑</span> 0% from last period
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Income Trend</h2>
+        <a href="/reports.html" class="button button-outline">View Reports</a>
+      </div>
+      <div class="chart-container">
+        <canvas id="incomeChart"></canvas>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Recent Transactions</h2>
+        <a href="/transactions.html" class="button button-outline">View All</a>
+      </div>
+      <div class="transactions-list" id="recentTransactions">
+        <!-- Transactions will be added by JavaScript -->
+      </div>
+    </div>
+    
+    <div class="insights-container">
+      <h2>AI Insights</h2>
+      <div id="insightsContainer">
+        <!-- Insights will be added by JavaScript -->
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 CreativeCash AI. All rights reserved.</p>
+    <p>Helping creative professionals manage their finances smarter.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('creativeCashUser') || '{}');
+      if (!userData.isLoggedIn) {
+        window.location.href = '/login.html';
+        return;
+      }
+      
+      // Update user display name
+      document.getElementById('userDisplayName').textContent = userData.fullName || 'User';
+      
+      // Handle logout
+      document.getElementById('logoutButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Update user data
+        userData.isLoggedIn = false;
+        localStorage.setItem('creativeCashUser', JSON.stringify(userData));
+        
+        // Redirect to login page
+        window.location.href = '/login.html';
+      });
+      
+      // Format currency
+      const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2
+        }).format(amount);
+      };
+      
+      // Load dashboard data
+      const loadDashboardData = () => {
+        // Simulate API call to get dashboard data
+        setTimeout(() => {
+          const dashboardData = {
+            totalIncome: 24850.75,
+            totalExpenses: 9320.42,
+            netProfit: 15530.33,
+            incomeTrend: 12.5,
+            expensesTrend: -5.2,
+            profitTrend: 18.7,
+            incomeByMonth: [
+              { month: 'Jan', amount: 2100 },
+              { month: 'Feb', amount: 2300 },
+              { month: 'Mar', amount: 2500 },
+              { month: 'Apr', amount: 2700 },
+              { month: 'May', amount: 3100 },
+              { month: 'Jun', amount: 3500 },
+              { month: 'Jul', amount: 3800 },
+              { month: 'Aug', amount: 4850.75 }
+            ],
+            recentTransactions: [
+              { id: 1, name: 'Client Project - XYZ Corp', date: '2023-08-15', amount: 2500, type: 'income' },
+              { id: 2, name: 'Adobe Creative Cloud', date: '2023-08-12', amount: 52.99, type: 'expense' },
+              { id: 3, name: 'Freelance Writing - Blog Post', date: '2023-08-10', amount: 350, type: 'income' },
+              { id: 4, name: 'Office Supplies', date: '2023-08-05', amount: 87.43, type: 'expense' },
+              { id: 5, name: 'Website Design Project', date: '2023-08-01', amount: 1800, type: 'income' }
+            ]
+          };
+          
+          // Update dashboard UI
+          document.getElementById('totalIncome').textContent = formatCurrency(dashboardData.totalIncome);
+          document.getElementById('totalExpenses').textContent = formatCurrency(dashboardData.totalExpenses);
+          document.getElementById('netProfit').textContent = formatCurrency(dashboardData.netProfit);
+          
+          // Update trends
+          const incomeTrendEl = document.getElementById('incomeTrend');
+          incomeTrendEl.innerHTML = `<span class="trend-icon">${dashboardData.incomeTrend > 0 ? '↑' : '↓'}</span> ${Math.abs(dashboardData.incomeTrend)}% from last period`;
+          incomeTrendEl.className = `stat-trend ${dashboardData.incomeTrend > 0 ? 'trend-up' : 'trend-down'}`;
+          
+          const expensesTrendEl = document.getElementById('expensesTrend');
+          expensesTrendEl.innerHTML = `<span class="trend-icon">${dashboardData.expensesTrend > 0 ? '↑' : '↓'}</span> ${Math.abs(dashboardData.expensesTrend)}% from last period`;
+          expensesTrendEl.className = `stat-trend ${dashboardData.expensesTrend < 0 ? 'trend-up' : 'trend-down'}`;
+          
+          const profitTrendEl = document.getElementById('profitTrend');
+          profitTrendEl.innerHTML = `<span class="trend-icon">${dashboardData.profitTrend > 0 ? '↑' : '↓'}</span> ${Math.abs(dashboardData.profitTrend)}% from last period`;
+          profitTrendEl.className = `stat-trend ${dashboardData.profitTrend > 0 ? 'trend-up' : 'trend-down'}`;
+          
+          // Render income chart
+          const ctx = document.getElementById('incomeChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: dashboardData.incomeByMonth.map(item => item.month),
+              datasets: [{
+                label: 'Monthly Income',
+                data: dashboardData.incomeByMonth.map(item => item.amount),
+                backgroundColor: 'rgba(92, 107, 192, 0.7)',
+                borderColor: 'rgba(92, 107, 192, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return '$' + value.toLocaleString();
+                    }
+                  }
+                }
+              }
+            }
+          });
+          
+          // Render recent transactions
+          const transactionsContainer = document.getElementById('recentTransactions');
+          transactionsContainer.innerHTML = '';
+          
+          dashboardData.recentTransactions.forEach(transaction => {
+            const transactionEl = document.createElement('div');
+            transactionEl.className = 'transaction-item';
+            
+            const formattedDate = new Date(transaction.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            });
+            
+            transactionEl.innerHTML = `
+              <div class="transaction-details">
+                <div class="transaction-name">${transaction.name}</div>
+                <div class="transaction-date">${formattedDate}</div>
+              </div>
+              <div class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'}${formatCurrency(transaction.amount)}</div>
+            `;
+            
+            transactionsContainer.appendChild(transactionEl);
+          });
+          
+          // Load insights
+          loadInsights();
+        }, 1000);
+      };
+      
+      // Load insights
+      const loadInsights = () => {
+        // Fetch insights from API
+        fetch('/api/insights')
+          .then(response => response.json())
+          .then(data => {
+            const insightsContainer = document.getElementById('insightsContainer');
+            insightsContainer.innerHTML = '';
+            
+            if (data.status === 'success' && data.data.length > 0) {
+              // Display first 3 insights
+              data.data.slice(0, 3).forEach(insight => {
+                const insightEl = document.createElement('div');
+                insightEl.className = `insight-card ${insight.impact}-impact`;
+                
+                insightEl.innerHTML = `
+                  <div class="insight-title">${insight.title}</div>
+                  <div class="insight-description">${insight.description}</div>
+                  <div class="insight-action">Action: ${insight.action}</div>
+                `;
+                
+                insightsContainer.appendChild(insightEl);
+              });
+            } else {
+              insightsContainer.innerHTML = '<p>No insights available at this time.</p>';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching insights:', error);
+            document.getElementById('insightsContainer').innerHTML = '<p>Failed to load insights. Please try again later.</p>';
+          });
+      };
+      
+      // Initialize dashboard
+      loadDashboardData();
+      
+      // Handle period selector change
+      document.getElementById('periodSelector').addEventListener('change', function() {
+        // In a real app, this would reload data for the selected period
+        console.log('Period changed to:', this.value);
+        // For demo, just reload the same data
+        loadDashboardData();
+      });
+    });
+  </script>
+</body>
+</html> 
